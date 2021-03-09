@@ -1,0 +1,1 @@
+INSERT INTO products VALUES (1, 'T-Shirt', 10);
