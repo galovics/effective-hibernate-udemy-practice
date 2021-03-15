@@ -1,7 +1,7 @@
 # Effective Hibernate Udemy practices
 The repo contains the practice exercises for the Effective Hibernate course on Udemy. 
 
-Link to the course: TBD
+Link to the course: [Effective Hibernate with Spring](https://www.udemy.com/course/effective-hibernate-with-spring/?referralCode=1FAF3B435F8E14AEDBE4)
 
 ## entity-transitions-practice
 Contains all the relevant practice cases for entity state transitions. It focuses around fixing the merging problem within an application.
