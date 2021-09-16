@@ -28,7 +28,7 @@ class EntityTransitionsPracticeApplicationTests {
 		int stockToBuy = 5;
 		int expectedStock = tShirtProduct.getStock() - stockToBuy;
 
-		// buying 5 of product with id 1
+		// buying 5 product with id 1
 		productService.buy(1, stockToBuy);
 
 		// verify that the stock equals to the expected amount

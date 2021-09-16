@@ -3,6 +3,7 @@ package com.arnoldgalovics.entitytransitions.practice.service;
 import com.arnoldgalovics.entitytransitions.practice.domain.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Random;
 
@@ -28,6 +29,7 @@ public class ProductService {
      * @param id the id of the product
      * @param amountToBuy the amount to buy
      */
+    @Transactional
     public void buy(int id, int amountToBuy) {
         Product product = find(id);
         product.setStock(product.getStock() - amountToBuy);
@@ -40,10 +42,11 @@ public class ProductService {
      * @param initialStock the initial stock of the product
      * @return the id of the created product
      */
+    @Transactional
     public int create(String productName, int initialStock) {
         int id = new Random().nextInt();
         Product product = new Product(id, productName, initialStock);
-        productRepository.save(product);
+        productRepository.persist(product);
         return id;
     }
 }

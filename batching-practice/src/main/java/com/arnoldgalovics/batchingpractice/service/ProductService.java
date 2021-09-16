@@ -2,6 +2,7 @@ package com.arnoldgalovics.batchingpractice.service;
 
 import com.arnoldgalovics.batchingpractice.domain.Product;
 import com.arnoldgalovics.batchingpractice.domain.ProductReview;
+import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +40,7 @@ public class ProductService {
      */
     @Transactional
     public void createInBathes(Collection<Product> newProducts, int batchSize) {
+        entityManager.unwrap(Session.class).setJdbcBatchSize(batchSize);
         for (Product product : newProducts) {
             entityManager.persist(product);
         }

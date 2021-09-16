@@ -1,5 +1,9 @@
 package com.arnoldgalovics.concurrencycontrolpractice.domain.optimistic;
 
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.OptimisticLockType;
+import org.hibernate.annotations.OptimisticLocking;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -9,6 +13,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "opt_dist_products")
+@OptimisticLocking(type = OptimisticLockType.DIRTY)
+@DynamicUpdate
 public class OptimisticDistinctProduct {
     @Id
     private int id;

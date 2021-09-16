@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -30,6 +31,9 @@ public class ProductService {
     @Transactional
     public Collection<ProductReview> getReviewsForProduct(int productId) {
         Product product = entityManager.find(Product.class, productId);
+        // trigger loading of the relationship
+        product.getReviews().size();
+        // although FETCH JOIN could also be used here with JPQL or Criteria API
         return product.getReviews();
     }
 
@@ -44,7 +48,10 @@ public class ProductService {
      */
     @Transactional
     public int getAverageRatingForProduct(int productId) {
-        Product product = entityManager.find(Product.class, productId);
+        TypedQuery<Product> query = entityManager.createQuery("FROM Product p JOIN FETCH p.reviews " +
+                "WHERE p.id = :id", Product.class);
+        query.setParameter("id", productId);
+        Product product = query.getSingleResult();
         List<ProductReview> reviews = product.getReviews();
         int sum = 0;
         for (ProductReview review : reviews) {
@@ -61,7 +68,11 @@ public class ProductService {
      */
     @Transactional
     public int getOverallAverageRating() {
-            List<Product> products = entityManager.createQuery("FROM Product", Product.class).getResultList();
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Product> query = cb.createQuery(Product.class);
+        Root<Product> root = query.from(Product.class);
+        root.fetch("reviews");
+        List<Product> products = entityManager.createQuery(query).getResultList();
         int sum = 0;
         int countOfReviews = 0;
         for (Product product : products) {
